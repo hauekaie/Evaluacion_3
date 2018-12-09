@@ -1,0 +1,112 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `sumatoria`(num int) RETURNS int(11)
+BEGIN
+	declare sumatoria int;
+    set sumatoria = 0;
+    
+    suma_loop: loop
+		if num > 0 then
+			set sumatoria = sumatoria + num;
+            set num = num - 1;
+            iterate suma_loop;
+        end if;
+		leave suma_loop;
+    end loop suma_loop;
+    
+    
+RETURN sumatoria;
+END
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `cuenta_ordenes`(customer_id varchar(5)) RETURNS int(11)
+BEGIN
+	declare cont int;
+    select count(*) into cont
+    from orders
+    where customerid = customer_id;
+RETURN cont;
+END
+
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select sumatoria(5);
++--------------+
+| sumatoria(5) |
++--------------+
+|           15 |
++--------------+
+1 row in set (0.0161 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > create table temp(
+                                        ... nombre varchar(5));
+Query OK, 0 rows affected (0.0541 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into temp values ('A'), ('B'), ('C');
+Query OK, 3 rows affected (0.0058 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from temp;
++--------+
+| nombre |
++--------+
+| A      |
+| B      |
+| C      |
++--------+
+3 rows in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > \use northwind
+Default schema set to `northwind`.
+Fetching table and column names from `northwind` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306  northwind  SQL > select * from customer limit 10;
+ERROR: 1146 (42S02): Table 'northwind.customer' doesn't exist
+
+ MySQL  localhost:3306  northwind  SQL > select * from customers limit 10;
++------------+------------------------------------+--------------------+----------------------+------------------------------+------------+--------+------------+---------+----------------+----------------+
+| CustomerID | CompanyName                        | ContactName        | ContactTitle         | Address                      | City       | Region | PostalCode | Country | Phone          | Fax            |
++------------+------------------------------------+--------------------+----------------------+------------------------------+------------+--------+------------+---------+----------------+----------------+
+| ALFKI      | Alfreds Futterkiste                | Maria Anders       | Sales Representative | Obere Str. 57                | Berlin     | NULL   | 12209      | Germany | 030-0074321    | 030-0076545    |
+| ANATR      | Ana Trujillo Emparedados y helados | Ana Trujillo       | Owner                | Avda. de la Constitucin 2222 | Mxico D.F. | NULL   | 05021      | Mexico  | (5) 555-4729   | (5) 555-3745   |
+| ANTON      | Antonio Moreno Taquera             | Antonio Moreno     | Owner                | Mataderos  2312              | Mxico D.F. | NULL   | 05023      | Mexico  | (5) 555-3932   | NULL           |
+| AROUT      | Around the Horn                    | Thomas Hardy       | Sales Representative | 120 Hanover Sq.              | London     | NULL   | WA1 1DP    | UK      | (171) 555-7788 | (171) 555-6750 |
+| BERGS      | Berglunds snabbkp                  | Christina Berglund | Order Administrator  | Berguvsvgen  8               | Lule       | NULL   | S-958 22   | Sweden  | 0921-12 34 65  | 0921-12 34 67  |
+| BLAUS      | Blauer See Delikatessen            | Hanna Moos         | Sales Representative | Forsterstr. 57               | Mannheim   | NULL   | 68306      | Germany | 0621-08460     | 0621-08924     |
+| BLONP      | Blondesddsl pre et fils            | Frdrique Citeaux   | Marketing Manager    | 24, place Klber              | Strasbourg | NULL   | 67000      | France  | 88.60.15.31    | 88.60.15.32    |
+| BOLID      | Blido Comidas preparadas           | Martn Sommer       | Owner                | C/ Araquil, 67               | Madrid     | NULL   | 28023      | Spain   | (91) 555 22 82 | (91) 555 91 99 |
+| BONAP      | Bon app'                           | Laurence Lebihan   | Owner                | 12, rue des Bouchers         | Marseille  | NULL   | 13008      | France  | 91.24.45.40    | 91.24.45.41    |
+| BOTTM      | Bottom-Dollar Markets              | Elizabeth Lincoln  | Accounting Manager   | 23 Tsawassen Blvd.           | Tsawassen  | BC     | T2F 8M4    | Canada  | (604) 555-4729 | (604) 555-3745 |
++------------+------------------------------------+--------------------+----------------------+------------------------------+------------+--------+------------+---------+----------------+----------------+
+10 rows in set (0.0035 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select count(*) from orders where customerid = 'ANATR';
++----------+
+| count(*) |
++----------+
+|        4 |
++----------+
+1 row in set (0.0051 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select sumatoria(5);
++--------------+
+| sumatoria(5) |
++--------------+
+|           15 |
++--------------+
+1 row in set (0.0005 sec)
+
+ MySQL  localhost:3306  northwind  SQL > desc customers;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| CustomerID   | varchar(5)  | NO   | PRI | NULL    |       |
+| CompanyName  | varchar(40) | NO   | MUL | NULL    |       |
+| ContactName  | varchar(30) | YES  |     | NULL    |       |
+| ContactTitle | varchar(30) | YES  |     | NULL    |       |
+| Address      | varchar(60) | YES  |     | NULL    |       |
+| City         | varchar(15) | YES  | MUL | NULL    |       |
+| Region       | varchar(15) | YES  | MUL | NULL    |       |
+| PostalCode   | varchar(10) | YES  | MUL | NULL    |       |
+| Country      | varchar(15) | YES  |     | NULL    |       |
+| Phone        | varchar(24) | YES  |     | NULL    |       |
+| Fax          | varchar(24) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+11 rows in set (0.0007 sec)

@@ -1,0 +1,187 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `conteo_clientes`(out cont int)
+
+BEGIN
+	select count(*) into cont
+    from customers;
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `conteo_clientes_filtro`(in letra text, out conteo int)
+BEGIN
+	select count(*) into conteo
+    from customers 
+    where companyname like concat(letra, '%');
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregar_region`(in nombre_region text)
+BEGIN
+	declare clave int;
+    
+    select max(regionid) into clave
+    from region;
+    
+    set clave = clave + 1;
+    
+    insert into region values(clave, nombre_region);
+    
+
+END
+
+
+
+ call consulta_clientes();
++------------+--------------------------------------+-------------------------+
+| customerid | companyname                          | contactname             |
++------------+--------------------------------------+-------------------------+
+| ALFKI      | Alfreds Futterkiste                  | Maria Anders            |
+| ANATR      | Ana Trujillo Emparedados y helados   | Ana Trujillo            |
+| ANTON      | Antonio Moreno Taquera               | Antonio Moreno          |
+| AROUT      | Around the Horn                      | Thomas Hardy            |
+| BERGS      | Berglunds snabbkp                    | Christina Berglund      |
+| BLAUS      | Blauer See Delikatessen              | Hanna Moos              |
+| BLONP      | Blondesddsl pre et fils              | Frdrique Citeaux        |
+| BOLID      | Blido Comidas preparadas             | Martn Sommer            |
+| BONAP      | Bon app'                             | Laurence Lebihan        |
+| BOTTM      | Bottom-Dollar Markets                | Elizabeth Lincoln       |
+| BSBEV      | B's Beverages                        | Victoria Ashworth       |
+| CACTU      | Cactus Comidas para llevar           | Patricio Simpson        |
+| CENTC      | Centro comercial Moctezuma           | Francisco Chang         |
+| CHOPS      | Chop-suey Chinese                    | Yang Wang               |
+| COMMI      | Comrcio Mineiro                      | Pedro Afonso            |
+| CONSH      | Consolidated Holdings                | Elizabeth Brown         |
+| DRACD      | Drachenblut Delikatessen             | Sven Ottlieb            |
+| DUMON      | Du monde entier                      | Janine Labrune          |
+| EASTC      | Eastern Connection                   | Ann Devon               |
+| ERNSH      | Ernst Handel                         | Roland Mendel           |
+| FAMIA      | Familia Arquibaldo                   | Aria Cruz               |
+| FISSA      | FISSA Fabrica Inter. Salchichas S.A. | Diego Roel              |
+| FOLIG      | Folies gourmandes                    | Martine Ranc            |
+| FOLKO      | Folk och f HB                        | Maria Larsson           |
+| FRANK      | Frankenversand                       | Peter Franken           |
+| FRANR      | France restauration                  | Carine Schmitt          |
+| FRANS      | Franchi S.p.A.                       | Paolo Accorti           |
+| FURIB      | Furia Bacalhau e Frutos do Mar       | Lino Rodriguez          |
+| GALED      | Galera del gastrnomo                 | Eduardo Saavedra        |
+| GODOS      | Godos Cocina Tpica                   | Jos Pedro Freyre        |
+| GOURL      | Gourmet Lanchonetes                  | Andr Fonseca            |
+| GREAL      | Great Lakes Food Market              | Howard Snyder           |
+| GROSR      | GROSELLA-Restaurante                 | Manuel Pereira          |
+| HANAR      | Hanari Carnes                        | Mario Pontes            |
+| HILAA      | HILARION-Abastos                     | Carlos Hernndez         |
+| HUNGC      | Hungry Coyote Import Store           | Yoshi Latimer           |
+| HUNGO      | Hungry Owl All-Night Grocers         | Patricia McKenna        |
+| ISLAT      | Island Trading                       | Helen Bennett           |
+| KOENE      | Kniglich Essen                       | Philip Cramer           |
+| LACOR      | La corne d'abondance                 | Daniel Tonini           |
+| LAMAI      | La maison d'Asie                     | Annette Roulet          |
+| LAUGB      | Laughing Bacchus Wine Cellars        | Yoshi Tannamuri         |
+| LAZYK      | Lazy K Kountry Store                 | John Steel              |
+| LEHMS      | Lehmanns Marktstand                  | Renate Messner          |
+| LETSS      | Let's Stop N Shop                    | Jaime Yorres            |
+| LILAS      | LILA-Supermercado                    | Carlos Gonzlez          |
+| LINOD      | LINO-Delicateses                     | Felipe Izquierdo        |
+| LONEP      | Lonesome Pine Restaurant             | Fran Wilson             |
+| MAGAA      | Magazzini Alimentari Riuniti         | Giovanni Rovelli        |
+| MAISD      | Maison Dewey                         | Catherine Dewey         |
+| MEREP      | Mre Paillarde                        | Jean Fresnire           |
+| MORGK      | Morgenstern Gesundkost               | Alexander Feuer         |
+| NORTS      | North/South                          | Simon Crowther          |
+| OCEAN      | Ocano Atlntico Ltda.                 | Yvonne Moncada          |
+| OLDWO      | Old World Delicatessen               | Rene Phillips           |
+| OTTIK      | Ottilies Kseladen                    | Henriette Pfalzheim     |
+| PARIS      | Paris spcialits                      | Marie Bertrand          |
+| PERIC      | Pericles Comidas clsicas             | Guillermo Fernndez      |
+| PICCO      | Piccolo und mehr                     | Georg Pipps             |
+| PRINI      | Princesa Isabel Vinhos               | Isabel de Castro        |
+| QUEDE      | Que Delcia                           | Bernardo Batista        |
+| QUEEN      | Queen Cozinha                        | Lcia Carvalho           |
+| QUICK      | QUICK-Stop                           | Horst Kloss             |
+| RANCH      | Rancho grande                        | Sergio Gutirrez         |
+| RATTC      | Rattlesnake Canyon Grocery           | Paula Wilson            |
+| REGGC      | Reggiani Caseifici                   | Maurizio Moroni         |
+| RICAR      | Ricardo Adocicados                   | Janete Limeira          |
+| RICSU      | Richter Supermarkt                   | Michael Holz            |
+| ROMEY      | Romero y tomillo                     | Alejandra Camino        |
+| SANTG      | Sant Gourmet                         | Jonas Bergulfsen        |
+| SAVEA      | Save-a-lot Markets                   | Jose Pavarotti          |
+| SEVES      | Seven Seas Imports                   | Hari Kumar              |
+| SIMOB      | Simons bistro                        | Jytte Petersen          |
+| SPECD      | Spcialits du monde                   | Dominique Perrier       |
+| SPLIR      | Split Rail Beer & Ale                | Art Braunschweiger      |
+| SUPRD      | Suprmes dlices                       | Pascale Cartrain        |
+| THEBI      | The Big Cheese                       | Liz Nixon               |
+| THECR      | The Cracker Box                      | Liu Wong                |
+| TOMSP      | Toms Spezialitten                    | Karin Josephs           |
+| TORTU      | Tortuga Restaurante                  | Miguel Angel Paolino    |
+| TRADH      | Tradio Hipermercados                 | Anabela Domingues       |
+| TRAIH      | Trail's Head Gourmet Provisioners    | Helvetius Nagy          |
+| VAFFE      | Vaffeljernet                         | Palle Ibsen             |
+| Val2       | IT                                   | Val2                    |
+| VALON      | IT                                   | Valon Hoti              |
+| VICTE      | Victuailles en stock                 | Mary Saveley            |
+| VINET      | Vins et alcools Chevalier            | Paul Henriot            |
+| WANDK      | Die Wandernde Kuh                    | Rita Mller              |
+| WARTH      | Wartian Herkku                       | Pirkko Koskitalo        |
+| WELLI      | Wellington Importadora               | Paula Parente           |
+| WHITC      | White Clover Markets                 | Karl Jablonski          |
+| WILMK      | Wilman Kala                          | Matti Karttunen         |
+| WOLZA      | Wolski  Zajazd                       | Zbyszek Piestrzeniewicz |
++------------+--------------------------------------+-------------------------+
+93 rows in set (0.0188 sec)
+Empty set (0.0188 sec)
+
+ MySQL  localhost:3306  northwind  SQL > call conteo_clientes(@conteo);
+Query OK, 1 row affected (0.0045 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select @conteo;
++---------+
+| @conteo |
++---------+
+|      93 |
++---------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  northwind  SQL > call conteo_clientes_filtro('A',@conteo);
+Query OK, 1 row affected (0.0043 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select @conteo;
++---------+
+| @conteo |
++---------+
+|       4 |
++---------+
+1 row in set (0.0002 sec)
+
+ MySQL  localhost:3306  northwind  SQL > call agregar_region('En mi pueblito nata con crepusculos...');
+Query OK, 1 row affected (0.0162 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from region;
++----------+----------------------------------------------------+
+| RegionID | RegionDescription                                  |
++----------+----------------------------------------------------+
+|        1 | Eastern                                            |
+|        2 | Westerns                                           |
+|        3 | Northern                                           |
+|        4 | Southern                                           |
+|        5 | En mi pueblito nata con crepusculos...             |
++----------+----------------------------------------------------+
+5 rows in set (0.0003 sec)
+
+ MySQL  localhost:3306  northwind  SQL > call agregar_region('En mi pueblito natal con crepusculos arremolados');
+Query OK, 1 row affected (0.0047 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from region;
++----------+----------------------------------------------------+
+| RegionID | RegionDescription                                  |
++----------+----------------------------------------------------+
+|        1 | Eastern                                            |
+|        2 | Westerns                                           |
+|        3 | Northern                                           |
+|        4 | Southern                                           |
+|        5 | En mi pueblito nata con crepusculos...             |
+|        6 | En mi pueblito natal con crepusculos arremolados   |
++----------+----------------------------------------------------+
+6 rows in set (0.0004 sec)
+
+ MySQL  localhost:3306  northwind  SQL >

@@ -1,0 +1,41 @@
+CREATE DEFINER=`root`@`localhost` TRIGGER `evaluacion_3`.`empleados_BEFORE_INSERT` BEFORE INSERT ON `empleados` FOR EACH ROW
+
+BEGIN
+	
+	if new.salario<10000 then
+		
+	signal sqlstate '45000'
+ set message_text= 'Paga mas tacaño';
+	
+end if;
+		
+	set new.rfc = genera_rfc (new.nombre, new.apellido, new.apellido_mat, new.fecha_Nac);
+
+END
+
+
+CREATE DEFINER = CURRENT_USER TRIGGER `evaluacion_3`.`empleados_AFTER_INSERT` AFTER INSERT ON `empleados` FOR EACH ROW
+
+BEGIN
+	
+	declare total_sal int;
+    
+	select sum(salario) into total_sal
+    
+	from empleados;
+    
+	update salarios
+    
+	set total_salarios = total_sal;
+
+END
+
+
+insert into empleados(Nombre, Apellido, Apellido_Mat, Fecha_Nac, Salario)
+	
+	values('Haziel', 'Hernandez', 'Melendez', '1998-08-08', 100000);
+    
+
+insert into empleados(Nombre, Apellido, Apellido_Mat, Fecha_Nac, Salario)
+	
+	values('Haziel', 'Hernandez', 'Melendez', '1998-08-05', 100);    

@@ -1,0 +1,112 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `genera_rfc`(nombre text, ap_pat text, ap_mat text, fecha date) RETURNS text CHARSET utf8
+BEGIN
+	
+#extraer las primeras dos letras del ap_pat
+    
+#primer letra del ap_mat
+    
+#primer letra del nombre
+    
+#HEMH210598
+    
+	DECLARE letras_pat text;
+    
+	declare letras_mat text;
+    
+	declare letras_nom text;
+    
+	declare annio int;
+    
+	declare mes int;
+    
+	declare dia int;
+    
+	declare clave text;
+    
+	declare mes_texto text;
+    
+	declare dia_texto text;
+    
+    
+
+	set letras_pat = left(ap_pat, 2);
+    
+#set letras_mat = left(ap_mat, 1);
+    
+	if length(ap_mat) > 0 then
+		
+		set letras_mat = left(ap_mat, 1);
+    
+	else
+		
+		set letras_mat = 'X';
+     
+	end if;   
+        
+	
+
+set letras_nom = left(nombre, 1);
+    
+    
+set annio = year(fecha);
+    
+set mes = month(fecha);
+    
+set dia = dayofmonth(fecha);
+    
+    
+    
+	if mes < 10 then
+		
+		set mes_texto = concat('0', mes);
+	
+	else
+		
+		set mes_texto = concat(mes);
+     
+	end if;   
+	
+	
+	if dia < 10 then
+		
+		set dia_texto = concat('0', dia);
+	
+	else
+		
+		set dia_texto = concat(dia);
+	
+	end if;  
+    
+    
+
+set clave = concat(letras_pat, letras_mat, letras_nom, annio, mes_texto, dia_texto);
+	   
+
+RETURN clave;
+
+END
+
+ MySQL  localhost:3306  northwind  SQL > \use evaluacion_3
+Default schema set to `evaluacion_3`.
+Fetching table and column names from `evaluacion_3` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select genera_rfc ('HAZIEL', 'HERNANDEZ', 'MELENDEZ', '1998-21-05');
+ERROR: 1292 (22007): ClassicResult.fetchOne: Incorrect date value: '1998-21-05' for column 'fecha' at row 1
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select genera_rfc ('HAZIEL', 'HERNANDEZ', 'MELENDEZ', '1998-05-21');
++--------------------------------------------------------------+
+| genera_rfc ('HAZIEL', 'HERNANDEZ', 'MELENDEZ', '1998-05-21') |
++--------------------------------------------------------------+
+| HEMH19980521                                                 |
++--------------------------------------------------------------+
+1 row in set (0.0043 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select genera_rfc ('HAZIEL', 'HERNANDEZ', '', '1998-05-21');
++------------------------------------------------------+
+| genera_rfc ('HAZIEL', 'HERNANDEZ', '', '1998-05-21') |
++------------------------------------------------------+
+| HEXH19980521                                         |
++------------------------------------------------------+
+1 row in set (0.0004 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL >

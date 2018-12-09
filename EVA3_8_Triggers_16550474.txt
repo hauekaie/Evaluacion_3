@@ -1,0 +1,37 @@
+CREATE DEFINER=`root`@`localhost` TRIGGER `evaluacion_3`.`ventas_AFTER_INSERT` AFTER INSERT ON `ventas` FOR EACH ROW 
+BEGIN
+	
+	declare gana double;
+    
+	set gana = new.totalventa - new.precio_neto;
+	
+	insert into ganancias 
+    
+	values(new.idventas, gana);
+    
+
+END
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `evaluacion_3`.`ventas_AFTER_UPDATE` AFTER UPDATE ON `ventas` FOR EACH ROW 
+BEGIN
+	
+	declare ganan double;
+    
+	set ganan = new.totalventa - new.precio_neto;
+    
+	update ganancias
+    
+	set ganancia = ganan
+    
+	where idventas = old.idventas;
+
+END
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `evaluacion_3`.`ventas_AFTER_DELETE` AFTER DELETE ON `ventas` FOR EACH ROW
+ BEGIN
+	
+	delete from ganancias
+    
+	where idventas = old.idventas;
+
+END

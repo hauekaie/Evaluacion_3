@@ -1,0 +1,37 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `asignar_rfc`() RETURNS int(11)
+BEGIN
+	declare nombre_txt text;
+    declare ap_pat_txt text;
+    declare ap_mat_txt text;
+    declare fecha_nac date;
+    declare employee_id text;
+    declare rfc_ text;
+    
+    #variable booleana de control
+    declare fin_cursor int default false;   #cuando llegueos al final, cambiar a true
+    #consulta select (cursor)
+    declare cursor_employees cursor for
+	SELECT EmployeeID,FirstName,LastName,BirthDate FROM copia_employees;
+    #manejador (handler) para la variable booleana
+    declare continue handler for not found set fin_cursor = true;
+    
+    set ap_mat_txt = '';
+	#usar cursos
+    open cursor_employees;
+    #usamos un ciclo para recorrerlo
+    ciclo_cursor: loop
+		#equivalente de iterate
+        fetch cursor_employees into employee_id,nombre_txt,ap_pat_txt,fecha_nac;
+        #al llegar al final se prodce la excepcion
+        #not found, cambiamos la varbale fin_cursor a true
+        if fin_cursor then
+			leave ciclo_cursor;
+		else 
+			set rfc_ = generar_rfc(nombre_txt,ap_pat_txt,ap_mat_txt,fecha_nac);
+            UPDATE copia_employees SET RFC = rfc_ WHERE EmployeeID = employee_id;
+		end if;
+    end loop;
+    
+    close cursor_employees;
+RETURN 1;
+END
